@@ -53,8 +53,8 @@ jobs:
 
       - name: Copy documentation
         run: |
-          mkdir -p _site/doc && cp -R build/doc _site/doc
-          mkdir -p _site/blueprint && cp -R blueprint/web _site/blueprint
+          mkdir -p _site/doc && mv build/doc _site/doc
+          mkdir -p _site/blueprint && mv blueprint/web _site/blueprint
 
       - name: Deploy doc & blueprint
         uses: peaceiris/actions-gh-pages@v3
