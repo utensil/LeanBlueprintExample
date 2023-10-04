@@ -48,19 +48,19 @@ jobs:
         run: |
           cd blueprint && pip install -r requirements.txt
 
-      - name: Build blueprint
-        run: |
-          cd blueprint && inv all
+      # - name: Build blueprint
+      #   run: |
+      #     cd blueprint && inv all
 
-      - name: Copy documentation
-        run: |
-          mkdir -p _site/doc && cp -R build/doc _site/doc
-          mkdir -p _site/blueprint && cp -R blueprint/web _site/blueprint
+      # - name: Copy documentation
+      #   run: |
+      #     mkdir -p _site/doc && cp -R build/doc _site/doc
+      #     mkdir -p _site/blueprint && cp -R blueprint/web _site/blueprint
 
-      - name: Deploy doc & blueprint
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.github_token }}
-          publish_dir: _site
+      # - name: Deploy doc & blueprint
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.github_token }}
+      #     publish_dir: _site
           # NOTE: To avoid overwriting existing files in gh_pages, we could deploy it to a subdirectory
           # destination_dir: subdirectory
