@@ -38,11 +38,24 @@ jobs:
       - name: Install elan
         run: curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain leanprover/lean4:4.0.0
 
-      - name: Get cache
+      - name: Get mathlib cache
         run: ~/.elan/bin/lake -Kenv=dev exe cache get
 
       - name: Build project
         run: ~/.elan/bin/lake -Kenv=dev build LeanBlueprintExample
+
+      - name: Get mathlib commit ID
+        id: get-mathlib-commit-id
+        run: |
+          mkdir -p build/doc/Mathlib
+          echo "mathlib_docs_commit=$(cd lake-packages/mathlib && git log -n 1 --format=%H)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Cache mathlib docs
+        uses: actions/cache@v3
+        with:
+          path: build/doc/Mathlib
+          key: mathlib-docs-${{ steps.get-mathlib-commit-id.outputs.mathlib_docs_commit }}
 
       - name: Build documentation
         run: ~/.elan/bin/lake -Kenv=dev build Mathlib:docs LeanBlueprintExample:docs
