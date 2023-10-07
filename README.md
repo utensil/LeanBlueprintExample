@@ -40,6 +40,6 @@ lake -Kenv=dev build YourProject:docs
 inv all
 ```
 
-8. Push to GitHub and enable GitHub Pages on `gh-pages` branch following [Configuring a publishing source for your GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+1. Push to GitHub and enable GitHub Pages following [Publishing with a custom GitHub Actions workflow](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow).
 
-9. CI will run around 10 minutes at `https://github.com/<your-github-username>/YourProject/actions` , when it turns green, check out your blueprint at `https://<your-github-username>.github.io/YourProject/blueprint` and your doc at `https://<your-github-username>.github.io/YourProject/doc`, then definitions and theorems in the blueprint should be able to jump to the corresponding doc pages, for example, the definitions of `one`, `two` and the theorem of `one_plus_one_eq_two` in the demo.
+2. CI will run around 10 minutes at `https://github.com/<your-github-username>/YourProject/actions` , when it turns green, check out your blueprint at `https://<your-github-username>.github.io/YourProject/blueprint` and your doc at `https://<your-github-username>.github.io/YourProject/doc`, then definitions and theorems in the blueprint should be able to jump to the corresponding doc pages, for example, the definitions of `one`, `two` and the theorem of `one_plus_one_eq_two` in the demo.

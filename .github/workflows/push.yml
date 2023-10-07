@@ -85,8 +85,11 @@ jobs:
           mv build/doc _site/doc
           mv blueprint/web _site/blueprint
 
-      - name: Deploy doc & blueprint
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload doc & blueprint artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.github_token }}
-          publish_dir: _site
+          path: '_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
