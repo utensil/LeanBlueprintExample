@@ -52,13 +52,20 @@ jobs:
         shell: bash
 
       - name: Cache mathlib docs
+        id: cache-mathlib-docs
         uses: actions/cache@v3
         with:
           path: build/doc/Mathlib
           key: mathlib-docs-${{ steps.get-mathlib-commit-id.outputs.mathlib_docs_commit }}
+          restore-keys: |
+            mathlib-docs-
 
-      - name: Build documentation
-        run: ~/.elan/bin/lake -Kenv=dev build Mathlib:docs LeanBlueprintExample:docs
+      - name: Build documentation for the project
+        run: ~/.elan/bin/lake -Kenv=dev build LeanBlueprintExample:docs
+
+      - name: Optionally build documentation for Mathlib
+        if: steps.cache-mathlib-docs.outputs.cache-hit != 'true'
+        run: ~/.elan/bin/lake -Kenv=dev build Mathlib:docs
 
       - name: Install Python
         uses: actions/setup-python@v4
