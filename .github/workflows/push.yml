@@ -62,6 +62,10 @@ jobs:
           packages: graphviz libgraphviz-dev pdf2svg dvisvgm texlive-full
           version: 1.0
 
+      - name: Restore texlive format files
+        run: |
+          sudo fmtutil-sys --all
+
       - name: Install blueprint deps
         run: |
           cd blueprint && pip install -r requirements.txt
