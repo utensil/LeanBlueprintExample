@@ -55,10 +55,12 @@ jobs:
           python-version: '3.9'
           cache: 'pip' # caching pip dependencies
 
-      - name: Install blueprint apt deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y graphviz libgraphviz-dev pdf2svg dvisvgm texlive-full
+      - name: Install blueprint apt deps with cache
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          # texlive-binaries is for kpsewhich, which is a dependency of plastex
+          packages: graphviz libgraphviz-dev pdf2svg dvisvgm texlive-full
+          version: 1.0
 
       - name: Install blueprint deps
         run: |
