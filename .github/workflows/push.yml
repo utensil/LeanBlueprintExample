@@ -62,9 +62,9 @@ jobs:
           packages: graphviz libgraphviz-dev pdf2svg dvisvgm texlive-full
           version: 1.0
 
-      - name: Restore texlive format files
+      - name: Restore texlive format files etc.
         run: |
-          sudo fmtutil-sys --all
+          sudo apt install --reinstall texlive-xetex
 
       - name: Install blueprint deps
         run: |
