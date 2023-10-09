@@ -12,7 +12,7 @@
   {"git":
    {"url": "https://github.com/leanprover/doc-gen4",
     "subDir?": null,
-    "rev": "402cfda104da78727a4ead99992abe638b8c14ef",
+    "rev": "f9d987567129f422ebd8cfac6a1e6233a06c720b",
     "opts": {},
     "name": "«doc-gen4»",
     "inputRev?": "main",
