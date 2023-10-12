@@ -13,3 +13,6 @@ require «doc-gen4» from git "https://github.com/leanprover/doc-gen4" @ "main"
 @[default_target]
 lean_lib «LeanBlueprintExample» where
   -- add any library configuration options here
+
+lean_exe «decls» where
+  root := `exe.Decls
