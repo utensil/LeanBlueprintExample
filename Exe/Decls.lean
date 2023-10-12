@@ -1,18 +1,11 @@
--- import Data.List.Sort
--- import Meta.Expr
 import Lean
--- import DocGen4
-
--- open DocGen4
 
 import Lake
 import Lake.Load
 
-open Lake
-
 open Lean System
 
-open Lean Elab Meta Command Term
+open Lake
 
 -- ## From DocGen4 lakefile
 
@@ -130,8 +123,6 @@ def sourceLinker (module : Name) (range : Option DeclarationRange): IO String :=
     else
       -- TODO: how to cache?
       if let some packageDir := getPackageDir root then
-      --   s!"found package {packageDir}"
-      -- else
         let projectGithubUrl := (← getProjectGithubUrl packageDir)
         let baseUrl := getGithubBaseUrl projectGithubUrl
         let commit := (<-getProjectCommit packageDir)
@@ -160,10 +151,6 @@ structure DeclarationInfo where
   moduleName : Name
   declarationName : Name
   declarationRange : DeclarationRange
-  line : Nat
-  endLine : Nat
-  -- fileName : Option String := none
-  -- githubUrl : Option String := none
 
   deriving Inhabited, Repr
 
@@ -171,28 +158,23 @@ instance : ToString DeclarationInfo :=
   ⟨reprStr⟩
 
 def getdeclarationInfo (moduleName : Name) (nc : Name × ConstantInfo) : MetaM (Option DeclarationInfo) := do
-  let (name, cinfo) := nc
+  let (name, _cinfo) := nc
   let declarationRange <- findDeclarationRanges? name
   let info := match declarationRange with
   | some declarationRange =>
     let range := declarationRange.range
-    let githubUrl := sourceLinker moduleName range
     some {
       root := moduleName.getRoot,
       moduleName := moduleName,
       declarationName := name,
-      declarationRange := range,
-      line := range.pos.line,
-      endLine := range.endPos.line
+      declarationRange := range
     }
-    -- pure s!"{moduleName.getRoot} {moduleName} :: {declarationName} : {pos.line}:{pos.column}"
   | none => none
 
   return info
   
 def decls (relevantModules : HashSet Name) : MetaM Unit := do
   let env ← getEnv
-  -- let relevantModules := HashSet.fromArray env.header.moduleNames
 
   for (name, cinfo) in env.constants.toList do
     let some modidx := env.getModuleIdxFor?  name | unreachable!
@@ -213,29 +195,12 @@ def decls (relevantModules : HashSet Name) : MetaM Unit := do
     | some info =>
       let url <- sourceLinker info.moduleName info.declarationRange
       println! s!"{info.declarationName} : {url}"
-      -- println! s!"{info}"
     | none => continue
 
-    -- match declarationRange with
-    -- | some declarationRange => do
-    --   let pos := declarationRange.range.pos
-    --   println! s!"{moduleName} :: {name} : {config.fileName}:{pos.line}:{pos.column}"
-    --   return ()
-    -- | none => continue
-    
-
-    -- match cinfo with
-    -- | .thmInfo thm => println! s!"{thm.name}"
-    -- | _ => pure ()
-
-  -- let decls := curr_env.fold [] List.cons
-  -- let filtered_decls := decls.filterₓ fun x => Not (to_name x).is_internal
-  -- let pieces := itersplit filtered_decls 6
-  -- pieces fun l => l (print_item_crawl curr_env h)
   -- IO.FS.writeFile "decls.yaml" ""
   return ()
 
--- ## Used code
+-- ## Unused code
 
 def getWs : IO Workspace := do
   let (elanInstall?, leanInstall?, lakeInstall?) ← Lake.findInstall?
@@ -252,11 +217,6 @@ def getWs : IO Workspace := do
   else
     throw <| IO.userError "Lean is not installed"
 
--- def getProjectGithubUrl : IO String := do
---   let projectBaseUrl := getGithubBaseUrl (← getProjectGithubUrl)
---   let projectCommit ← getProjectCommit
---   return s!"{projectBaseUrl}/commit/{projectCommit}"
-
 -- ## Main: entry point, misc setup
 
 def main (args : List String) : IO Unit := do
@@ -266,13 +226,6 @@ def main (args : List String) : IO Unit := do
     throw <| IO.userError "Please provide at least one package name"
   else
     pure ()
-
-  -- result: crash
-  -- let ws ← getWs
-  -- println! s!"{ws.root.dir}"
-
-  -- output: build/bin/decls
-  -- println! (<-IO.appPath)
 
   -- let packages : Array Name := #["LeanBlueprintExample"]
   let packages : Array Name := args.map Name.mkSimple |>.toArray
@@ -289,7 +242,3 @@ def main (args : List String) : IO Unit := do
   }
 
   Prod.fst <$> Meta.MetaM.toIO (decls relevantModules) config { env := env } {} {}
-
-  -- Meta.MetaM.toIO decls
-  -- ReaderT.run decls
-  -- return ()
