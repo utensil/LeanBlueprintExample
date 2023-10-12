@@ -160,3 +160,6 @@ cython_debug/
 #.idea/
 
 **/*.olean
+.DS_Store
+.vscode/
+lake-packages/
