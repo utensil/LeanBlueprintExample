@@ -1,6 +1,7 @@
 # LeanBlueprintExample
 
-> Note: this example project is a little bit outdated, please refer to the projects listed [here](https://github.com/PatrickMassot/leanblueprint/pull/5#issuecomment-1809432850) for the latest working setups.
+> [!WARNING]  
+> This example project is very outdated, please check out the latest https://github.com/PatrickMassot/leanblueprint instead.
 
 1. [Install elan](https://github.com/leanprover/elan#installation)
 
